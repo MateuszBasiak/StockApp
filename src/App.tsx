@@ -143,7 +143,7 @@ const App = () => {
       
       <MainDiv>
         <Title>Stock Platform</Title>
-        <Navi allCompanies={allCompanies} setCurrCompanies={setCurrCompanies}/>
+        <Navi setPage={setPage} allCompanies={allCompanies} setCurrCompanies={setCurrCompanies}/>
         {allCompanies.length > 0 ? 
         <div>
           <PageWrap>

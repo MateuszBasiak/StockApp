@@ -5,6 +5,7 @@ import styled from 'styled-components';
 interface Props{
     allCompanies: Array<ICompany>;
     setCurrCompanies: (x: Array<ICompany>) => void;
+    setPage: (x: number) => void;
 };
 
 const StyledDiv = styled.div`
@@ -43,7 +44,7 @@ const StyledCheckBox = styled.input`
 
 const exchanges = ['NYSE', 'NYSE ARCA', 'NASDAQ', 'NYSE MKT', 'BATS'];
 
-const Navi: React.FC<Props> = ({setCurrCompanies, allCompanies}) => {
+const Navi: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
     const searchCompanies = () => {
         let res: Array<ICompany> = [];
         let currExchanges: Array<string> = [];
@@ -56,7 +57,8 @@ const Navi: React.FC<Props> = ({setCurrCompanies, allCompanies}) => {
             let searchString : string = (searchBar as HTMLInputElement).value.trim().toLowerCase();
             allCompanies.forEach(company => {if(currExchanges.includes(company.exchange) && company.name.toLowerCase().includes(searchString)) res.push(company);});
         }
-       setCurrCompanies(res); 
+       setCurrCompanies(res);
+       setPage(1); 
     }
     return (
     <StyledDiv>
