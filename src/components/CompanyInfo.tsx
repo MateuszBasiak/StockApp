@@ -4,6 +4,7 @@ import {IPopup, MainColor, ICompanyGet, IChartData} from './Primitives';
 import closeButton from '../img/closeButton.png';
 import ApiClient from '../apiclient/ApiClient';
 import {LineChart, Line, CartesianGrid, XAxis, YAxis, Legend} from 'recharts';
+import ReactLoading from 'react-loading';
 
 interface Props{
     symbol: string;
@@ -73,6 +74,13 @@ const InfoRow = styled.td`
     padding-right: 60px;
 `;
 
+const LoadingWrap = styled.div`
+    position: relative;
+    top: 40%;
+    width: 100px;
+    margin: auto;
+`
+
 const decodeTimeSeries = (response: any) : Array<IChartData> => {
     const res: Array<IChartData> = [];
     const header = "Time Series (5min)";
@@ -127,7 +135,7 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
         <BackgroundDiv>
             <ContentDiv>
                 <StyledImg src={closeButton} onClick={() => closePopup({visible: false, symbol: "", name: ""})}/>
-                {company.Symbol ?
+                {chartData.length > 0 ?
                     <>
                         <Name>{name}</Name>
                         <ContentWrap>
@@ -153,7 +161,10 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
                             </InfoWrap>
                         </ContentWrap>
                     </> 
-                    : null
+                    : 
+                    <LoadingWrap>
+                        <ReactLoading height={100} width={100} type={"spin"} color={"black"}/>
+                    </LoadingWrap>
                 }
             </ContentDiv>
         </BackgroundDiv>);

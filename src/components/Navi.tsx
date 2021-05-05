@@ -64,7 +64,7 @@ const Navi: React.FC<Props> = ({setCurrCompanies, allCompanies}) => {
         <SearchBox id='searchbar'/>
         <SubTitle>Exchanges:</SubTitle>
         <StyledForm id='exchangeForm'>
-            {exchanges.map(exchange => <><StyledCheckBox key={exchange} type="checkbox" id={exchange} name={exchange} defaultChecked/><label htmlFor={exchange}>{exchange}</label><br/></>)}
+            {exchanges.map(exchange => <div key={exchange+'div'}><StyledCheckBox key={exchange} type="checkbox" id={exchange} name={exchange} defaultChecked/><label key={exchange+"label"}htmlFor={exchange}>{exchange}</label></div>)}
         </StyledForm>
         <button onClick={() => searchCompanies()}>Search</button>
     </StyledDiv>);

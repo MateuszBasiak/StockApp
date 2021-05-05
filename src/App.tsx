@@ -5,6 +5,7 @@ import ApiClient from './apiclient/ApiClient';
 import {ICompany, IPopup, MainColor, SecondaryColor} from './components/Primitives';
 import CompanyInfo from './components/CompanyInfo';
 import Navi from './components/Navi';
+import ReactLoading from 'react-loading';
 
 const MainDiv = styled.div`
   box-sizing: border-box;
@@ -72,6 +73,13 @@ const PageBlock = styled.div`
     color: white;
   }
 `;
+
+const LoadingWrap = styled.div`
+    position: relative;
+    top: 60%;
+    width: 100px;
+    margin: auto;
+`
 
 const decodeString = (string: string) => {
   let lines = string.split('\n');
@@ -158,7 +166,9 @@ const App = () => {
         </PageWrap>
         </div>
         :
-        null}
+        <LoadingWrap>
+            <ReactLoading height={100} width={100} type={"spin"} color={"black"}/>
+        </LoadingWrap>}
       </MainDiv>
     </>
   );
