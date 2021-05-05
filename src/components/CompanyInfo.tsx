@@ -163,7 +163,7 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
                     </> 
                     : 
                     <LoadingWrap>
-                        <ReactLoading height={100} width={100} type={"spin"} color={"black"}/>
+                        <ReactLoading height={100} width={100} type={"spin"} color={MainColor}/>
                     </LoadingWrap>
                 }
             </ContentDiv>
