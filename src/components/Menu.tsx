@@ -34,7 +34,7 @@ const SubTitle = styled.div`
     margin-bottom: 15px;
 `;
 
-const CheckBoxWwrap = styled.div`
+const CheckBoxWrap = styled.div`
     text-align: left;
 `;
 
@@ -49,7 +49,7 @@ const Menu: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
     const searchCompanies = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         let res: Array<ICompany> = [];
-        let currExchanges: Array<string> = [];
+        const currExchanges: Array<string> = [];
         let searchString = (event.currentTarget[0] as HTMLInputElement).value.toLowerCase().trim();
         for(let i = 1; i<exchanges.length+1; i++){
             if((event.currentTarget[i] as HTMLInputElement).checked) 
@@ -66,9 +66,9 @@ const Menu: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
             <SubTitle>Search Company By Name</SubTitle>
             <SearchBox id='searchbar' name='searchbar'/>
             <SubTitle>Exchanges:</SubTitle>
-            <CheckBoxWwrap>
+            <CheckBoxWrap>
                 {exchanges.map(exchange => <div key={exchange+'div'}><StyledCheckBox key={exchange} type="checkbox" id={exchange} name={exchange} defaultChecked/><label key={exchange+"label"}htmlFor={exchange}>{exchange}</label></div>)}
-            </CheckBoxWwrap>
+            </CheckBoxWrap>
             <button type='submit'>Search</button>
         </form>
     </StyledDiv>);

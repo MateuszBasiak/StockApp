@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ApiClient from './apiclient/ApiClient';
 import {ICompany, IPopup, MainColor, SecondaryColor} from './components/Primitives';
 import CompanyInfo from './components/CompanyInfo';
-import Menu from './components/Navi';
+import Menu from './components/Menu';
 import ReactLoading from 'react-loading';
 
 const MainDiv = styled.div`

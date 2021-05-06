@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import {IPopup, MainColor, ICompanyGet, IChartData} from './Primitives';
 import closeButton from '../img/closeButton.png';
 import ApiClient from '../apiclient/ApiClient';
-import {LineChart, Line, CartesianGrid, XAxis, YAxis, Legend} from 'recharts';
+import {LineChart, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip} from 'recharts';
 import ReactLoading from 'react-loading';
 
 interface Props{
@@ -136,6 +136,7 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
                                     <Line type="monotone" dataKey="low" stroke={"red"} dot={false}/>
                                     <CartesianGrid strokeDasharray="3 3"/>
                                     <Legend />
+                                    <Tooltip />
                                     <XAxis dataKey="date" />
                                     <YAxis domain={['auto', 'auto']}/>
                                 </LineChart>
