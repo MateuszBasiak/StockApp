@@ -23,7 +23,7 @@ export interface ICompanyGet {
     "52WeekLow"?: number;
     "50DayMovingAverage"?: number;
     SharesOutstanding?: number;
-    ShareShort?: number;
+    SharesShort?: number;
     ShortRatio?: number;
     PayoutRatio?: number;
     ForwardPE?: number;
