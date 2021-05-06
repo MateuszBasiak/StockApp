@@ -96,20 +96,9 @@ const decodeTimeSeries = (response: any) : Array<IChartData> => {
     return res.reverse();
 }
 
-const findMaxDiff = (arr: Array<IChartData>): Array<number> => {
-    let max = 0;
-    let min = Infinity;
-    arr.forEach(object => {
-        max = Math.max(object.high, object.open, max);
-        min = Math.min(object.open, object.low, min);
-    })
-    return [max, min];
-}
-
 const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
     const [company, setCompany] = useState<ICompanyGet>({});
     const [chartData, setData] = useState<Array<IChartData>>([]);
-    const [difference, setDiff] = useState<Array<number>>([]);
 
     useEffect(() => {
         let apiClient = new ApiClient();
@@ -124,7 +113,6 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
         apiClient.getTodaysStocks(symbol, "5min")
         .then(response => response.json())
         .then(response => decodeTimeSeries(response))
-        .then(response => {setDiff(findMaxDiff(response)); return response;})
         .then(response => setData(response))
         .catch(e => console.log(e))
     }, [symbol])
@@ -148,7 +136,7 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
                                     <CartesianGrid strokeDasharray="3 3"/>
                                     <Legend />
                                     <XAxis dataKey="date" />
-                                    <YAxis domain={difference}/>
+                                    <YAxis domain={['auto', 'auto']}/>
                                 </LineChart>
                             </ChartWrap>
                             <InfoWrap>
