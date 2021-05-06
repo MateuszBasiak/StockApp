@@ -34,7 +34,7 @@ const SubTitle = styled.div`
     margin-bottom: 15px;
 `;
 
-const StyledForm = styled.form`
+const CheckBoxWwrap = styled.div`
     text-align: left;
 `;
 
@@ -44,32 +44,34 @@ const StyledCheckBox = styled.input`
 
 const exchanges = ['NYSE', 'NYSE ARCA', 'NASDAQ', 'NYSE MKT', 'BATS'];
 
-const Navi: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
-    const searchCompanies = () => {
+const Menu: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
+
+    const searchCompanies = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         let res: Array<ICompany> = [];
         let currExchanges: Array<string> = [];
-        const searchBar = document.getElementById('searchbar');
-        const form = document.getElementById('exchangeForm');
-        if(form){
-            exchanges.forEach(exchange => {if((form as HTMLFormElement)[exchange].checked) currExchanges.push(exchange);});
+        let searchString = (event.currentTarget[0] as HTMLInputElement).value.toLowerCase().trim();
+        for(let i = 1; i<exchanges.length+1; i++){
+            if((event.currentTarget[i] as HTMLInputElement).checked) 
+                currExchanges.push((event.currentTarget[i] as HTMLInputElement).name);
         }
-        if(searchBar){
-            let searchString : string = (searchBar as HTMLInputElement).value.trim().toLowerCase();
-            allCompanies.forEach(company => {if(currExchanges.includes(company.exchange) && company.name.toLowerCase().includes(searchString)) res.push(company);});
-        }
+        res = allCompanies.filter(company => currExchanges.includes(company.exchange) && company.name.toLowerCase().includes(searchString));
        setCurrCompanies(res);
        setPage(1); 
     }
+
     return (
     <StyledDiv>
-        <SubTitle>Search Company By Name</SubTitle>
-        <SearchBox id='searchbar'/>
-        <SubTitle>Exchanges:</SubTitle>
-        <StyledForm id='exchangeForm'>
-            {exchanges.map(exchange => <div key={exchange+'div'}><StyledCheckBox key={exchange} type="checkbox" id={exchange} name={exchange} defaultChecked/><label key={exchange+"label"}htmlFor={exchange}>{exchange}</label></div>)}
-        </StyledForm>
-        <button onClick={() => searchCompanies()}>Search</button>
+        <form onSubmit={searchCompanies}>
+            <SubTitle>Search Company By Name</SubTitle>
+            <SearchBox id='searchbar' name='searchbar'/>
+            <SubTitle>Exchanges:</SubTitle>
+            <CheckBoxWwrap>
+                {exchanges.map(exchange => <div key={exchange+'div'}><StyledCheckBox key={exchange} type="checkbox" id={exchange} name={exchange} defaultChecked/><label key={exchange+"label"}htmlFor={exchange}>{exchange}</label></div>)}
+            </CheckBoxWwrap>
+            <button type='submit'>Search</button>
+        </form>
     </StyledDiv>);
 }
 
-export default Navi;
+export default Menu;

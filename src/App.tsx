@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import ApiClient from './apiclient/ApiClient';
 import {ICompany, IPopup, MainColor, SecondaryColor} from './components/Primitives';
 import CompanyInfo from './components/CompanyInfo';
-import Navi from './components/Navi';
+import Menu from './components/Navi';
 import ReactLoading from 'react-loading';
 
 const MainDiv = styled.div`
@@ -143,7 +143,7 @@ const App = () => {
       
       <MainDiv>
         <Title>Stock Platform</Title>
-        <Navi setPage={setPage} allCompanies={allCompanies} setCurrCompanies={setCurrCompanies}/>
+        <Menu setPage={setPage} allCompanies={allCompanies} setCurrCompanies={setCurrCompanies}/>
         {allCompanies.length > 0 ? 
         <div>
           <PageWrap>
