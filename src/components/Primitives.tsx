@@ -22,6 +22,11 @@ export interface ICompanyGet {
     "52WeekHigh"?: number;
     "52WeekLow"?: number;
     "50DayMovingAverage"?: number;
+    SharesOutstanding?: number;
+    ShareShort?: number;
+    ShortRatio?: number;
+    PayoutRatio?: number;
+    ForwardPE?: number;
 }
 
 export interface IChartData{

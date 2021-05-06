@@ -117,7 +117,8 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
         .catch(e => console.log(e))
     }, [symbol])
 
-    const keys: Array<keyof ICompanyGet> = ["Symbol", "Exchange", "Currency", "Country", "Sector", "Industry", "Address", "52WeekHigh", "52WeekLow", "50DayMovingAverage"];
+    const keys: Array<keyof ICompanyGet> = ["Symbol", "Exchange", "Currency", "Country", "Sector", "Industry", "Address", "52WeekHigh", 
+    "52WeekLow", "50DayMovingAverage", "SharesOutstanding", "ShareShort", "ShortRatio", "PayoutRatio", "ForwardPE"];
 
     return (
         <BackgroundDiv>
