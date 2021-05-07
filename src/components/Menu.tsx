@@ -22,7 +22,7 @@ const StyledDiv = styled.div`
 const SearchBox = styled.input`
     width: 210px;
     height: 25px;
-    font-size: 15px;
+    font-size: 17px;
     border-radius: 5px;
     margin-bottom: 25px;
 `;
@@ -40,6 +40,14 @@ const CheckBoxWrap = styled.div`
 
 const StyledCheckBox = styled.input`
     margin-bottom: 7px;
+`;
+
+const StyledButton = styled.button`
+    width: 210px;
+    height: 30px;
+    margin-top: 10px;
+    background: #fffef2;
+    font-size: 17px;
 `;
 
 const exchanges = ['NYSE', 'NYSE ARCA', 'NASDAQ', 'NYSE MKT', 'BATS'];
@@ -69,7 +77,7 @@ const Menu: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
             <CheckBoxWrap>
                 {exchanges.map(exchange => <div key={exchange+'div'}><StyledCheckBox key={exchange} type="checkbox" id={exchange} name={exchange} defaultChecked/><label key={exchange+"label"}htmlFor={exchange}>{exchange}</label></div>)}
             </CheckBoxWrap>
-            <button type='submit'>Search</button>
+            <StyledButton type='submit'>Search</StyledButton>
         </form>
     </StyledDiv>);
 }
