@@ -28,7 +28,6 @@ const ContentDiv = styled.div`
     margin: auto;
     position: sticky;
     background: white;
-    opacity: 1;
     padding: 20px;
 `;
 
@@ -56,6 +55,8 @@ const SubTitle = styled.div`
 
 const ContentWrap = styled.div`
     padding: 0 30px;
+    display: flex;
+    justify-content: space-between;
 `;
 
 const InfoWrap = styled.div`
@@ -138,7 +139,7 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
                                     <Legend />
                                     <Tooltip />
                                     <XAxis dataKey="date" />
-                                    <YAxis domain={['auto', 'auto']}/>
+                                    <YAxis tickFormatter={(tick: number) => (Math.round((tick + Number.EPSILON) * 100) / 100).toString()} domain={['dataMin-0.1', 'dataMax+0.1']}/>
                                 </LineChart>
                             </ChartWrap>
                             <InfoWrap>

@@ -8,23 +8,45 @@ interface Props{
     setPage: (x: number) => void;
 };
 
-const StyledDiv = styled.div`
-    box-sizing: border-box;
-    width: 250px;
-    padding: 20px 10px;
-    left: 0%;
+const MenuWrap = styled.div`
+    width: 255px;
+    padding: 20px 20px;
+    left: -238px;
     color: white;
-    position: absolute;
+    position: fixed;
     background: ${MainColor};
     text-align: center;
-    align-items: center;
+    transition: left 0.1s 2s;
+
+    :hover{
+        left: -5px;
+        transition: left 0.1s;
+        #name-wrap{
+            visibility: hidden;
+            height: 0;
+            transition: visibility 0s;
+        }
+    }
 `;
+
+const NameWrap = styled.div`
+    position: relative;
+    float: right;
+    width: 20px;
+    height: 282px;
+    padding-left: 15px;
+    writing-mode: vertical-rl;
+    font-size: 30px;
+    font-weight: bold;
+    transition: visibility 0s 2s, height 0s 2s;
+`
+
 const SearchBox = styled.input`
     width: 210px;
     height: 25px;
     font-size: 17px;
     border-radius: 5px;
-    margin-bottom: 25px;
+    margin-bottom: 15px;
 `;
 
 const SubTitle = styled.div`
@@ -46,7 +68,6 @@ const StyledButton = styled.button`
     width: 210px;
     height: 30px;
     margin-top: 10px;
-    background: #fffef2;
     font-size: 17px;
 `;
 
@@ -68,18 +89,21 @@ const Menu: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
        setPage(1); 
     }
 
+
+
     return (
-    <StyledDiv>
-        <form onSubmit={searchCompanies}>
-            <SubTitle>Search Company By Name</SubTitle>
-            <SearchBox id='searchbar' name='searchbar'/>
-            <SubTitle>Exchanges:</SubTitle>
-            <CheckBoxWrap>
-                {exchanges.map(exchange => <div key={exchange+'div'}><StyledCheckBox key={exchange} type="checkbox" id={exchange} name={exchange} defaultChecked/><label key={exchange+"label"}htmlFor={exchange}>{exchange}</label></div>)}
-            </CheckBoxWrap>
-            <StyledButton type='submit'>Search</StyledButton>
-        </form>
-    </StyledDiv>);
+        <MenuWrap>
+            <NameWrap id='name-wrap'>Menu</NameWrap>
+            <form onSubmit={searchCompanies}>
+                <SubTitle>Search Company:</SubTitle>
+                <SearchBox name='searchbar'/>
+                <SubTitle>Exchanges:</SubTitle>
+                <CheckBoxWrap>
+                    {exchanges.map(exchange => <div key={exchange+'div'}><StyledCheckBox type="checkbox" name={exchange} defaultChecked/><label htmlFor={exchange}>{exchange}</label></div>)}
+                </CheckBoxWrap>
+                <StyledButton type='submit'>Search</StyledButton>
+            </form>
+        </MenuWrap>);
 }
 
 export default Menu;
