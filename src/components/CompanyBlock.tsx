@@ -10,12 +10,12 @@ interface Props{
 
 const CompanyBlock: React.FC<Props> = ({symbol, name, exchange, showPopup}) => {
 
-    return (
-    <tr onClick={() => showPopup({visible: true, symbol, name})}>
-        <td>{symbol}</td>
-        <td>{name}</td>
-        <td>{exchange}</td>
-    </tr>);
-}
+	return (
+		<tr onClick={() => showPopup({visible: true, symbol, name})}>
+			<td>{symbol}</td>
+			<td>{name}</td>
+			<td>{exchange}</td>
+		</tr>);
+};
 
 export default CompanyBlock;

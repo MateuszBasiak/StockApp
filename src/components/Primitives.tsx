@@ -19,9 +19,9 @@ export interface ICompanyGet {
     Sector?: string;
     Industry?: string;
     Address?: string;
-    "52WeekHigh"?: number;
-    "52WeekLow"?: number;
-    "50DayMovingAverage"?: number;
+    '52WeekHigh'?: number;
+    '52WeekLow'?: number;
+    '50DayMovingAverage'?: number;
     SharesOutstanding?: number;
     SharesShort?: number;
     ShortRatio?: number;
@@ -36,5 +36,6 @@ export interface IChartData{
     low: number;
 }
 
-export const MainColor = "#3d3d3d";
-export const SecondaryColor = "lightgrey";
+export const MainColor = '#3d3d3d';
+export const SecondaryColor = 'lightgrey';
+export const BackgroundColor = '#f5f2e9';

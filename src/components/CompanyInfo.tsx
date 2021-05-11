@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import styled from 'styled-components';
-import {IPopup, MainColor, ICompanyGet, IChartData} from './Primitives';
+import {IPopup, MainColor, ICompanyGet, IChartData, BackgroundColor} from './Primitives';
 import closeButton from '../img/closeButton.png';
 import ApiClient from '../apiclient/ApiClient';
 import {LineChart, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip} from 'recharts';
@@ -27,7 +27,7 @@ const ContentDiv = styled.div`
     height: 600px;
     margin: auto;
     position: sticky;
-    background: white;
+    background: ${BackgroundColor};
     padding: 20px;
 `;
 
@@ -80,85 +80,85 @@ const LoadingWrap = styled.div`
     top: 40%;
     width: 100px;
     margin: auto;
-`
+`;
 
 const decodeTimeSeries = (response: any) : Array<IChartData> => {
-    const res: Array<IChartData> = [];
-    const header = "Time Series (5min)";
-    if(!response[header]) return res;
-    Object.keys(response[header]).slice(0, 50).forEach((date: string) => {
-        res.push({
-            date: date.split(' ')[1],
-            open: response[header][date]["1. open"],
-            high: response[header][date]["2. high"],
-            low: response[header][date]["3. low"],
-        })
-    });
-    return res.reverse();
-}
+	const res: Array<IChartData> = [];
+	const header = 'Time Series (5min)';
+	if(!response[header]) return res;
+	Object.keys(response[header]).slice(0, 50).forEach((date: string) => {
+		res.push({
+			date: date.split(' ')[1],
+			open: response[header][date]['1. open'],
+			high: response[header][date]['2. high'],
+			low: response[header][date]['3. low'],
+		});
+	});
+	return res.reverse();
+};
 
 const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
-    const [company, setCompany] = useState<ICompanyGet>({});
-    const [chartData, setData] = useState<Array<IChartData>>([]);
+	const [company, setCompany] = useState<ICompanyGet>({});
+	const [chartData, setData] = useState<Array<IChartData>>([]);
 
-    useEffect(() => {
-        let apiClient = new ApiClient();
-        apiClient.getCompanyInfo(symbol)
-        .then(response => response.json())
-        .then(response => setCompany(response))
-        .catch(e => console.log(e));
-    }, [symbol])
+	useEffect(() => {
+		const apiClient = new ApiClient();
+		apiClient.getCompanyInfo(symbol)
+			.then(response => response.json())
+			.then(response => setCompany(response))
+			.catch(e => console.log(e));
+	}, [symbol]);
 
-    useEffect(() => {
-        let apiClient = new ApiClient();
-        apiClient.getTodaysStocks(symbol, "5min")
-        .then(response => response.json())
-        .then(response => decodeTimeSeries(response))
-        .then(response => setData(response))
-        .catch(e => console.log(e))
-    }, [symbol])
+	useEffect(() => {
+		const apiClient = new ApiClient();
+		apiClient.getTodaysStocks(symbol, '5min')
+			.then(response => response.json())
+			.then(response => decodeTimeSeries(response))
+			.then(response => setData(response))
+			.catch(e => console.log(e));
+	}, [symbol]);
 
-    const keys: Array<keyof ICompanyGet> = ["Symbol", "Exchange", "Currency", "Country", "Sector", "Industry", "Address", "52WeekHigh", 
-    "52WeekLow", "50DayMovingAverage", "SharesOutstanding", "SharesShort", "ShortRatio", "PayoutRatio", "ForwardPE"];
+	const keys: Array<keyof ICompanyGet> = ['Symbol', 'Exchange', 'Currency', 'Country', 'Sector', 'Industry', 'Address', '52WeekHigh', 
+		'52WeekLow', '50DayMovingAverage', 'SharesOutstanding', 'SharesShort', 'ShortRatio', 'PayoutRatio', 'ForwardPE'];
 
-    return (
-        <BackgroundDiv>
-            <ContentDiv>
-                <StyledImg src={closeButton} onClick={() => closePopup({visible: false, symbol: "", name: ""})}/>
-                {chartData.length > 0 ?
-                    <>
-                        <Name>{name}</Name>
-                        <ContentWrap>
-                            <ChartWrap>
-                                <SubTitle>Today's stock price</SubTitle>
-                                <LineChart width={500} height={400} data={chartData}>
-                                    <Line type="monotone" dataKey="open" stroke={MainColor} dot={false}/>
-                                    <Line type="monotone" dataKey="high" stroke={"green"} dot={false}/>
-                                    <Line type="monotone" dataKey="low" stroke={"red"} dot={false}/>
-                                    <CartesianGrid strokeDasharray="3 3"/>
-                                    <Legend />
-                                    <Tooltip />
-                                    <XAxis dataKey="date" />
-                                    <YAxis tickFormatter={(tick: number) => (Math.round((tick + Number.EPSILON) * 100) / 100).toString()} domain={['dataMin-0.1', 'dataMax+0.1']}/>
-                                </LineChart>
-                            </ChartWrap>
-                            <InfoWrap>
-                                <SubTitle>Company Info</SubTitle>
-                                <table>
-                                    <tbody>
-                                        {keys.map(key => <tr key={key}><InfoRow>{key}:</InfoRow><td>{company[key]}</td></tr>)}
-                                    </tbody>
-                                </table>
-                            </InfoWrap>
-                        </ContentWrap>
-                    </> 
-                    : 
-                    <LoadingWrap>
-                        <ReactLoading height={100} width={100} type={"spin"} color={MainColor}/>
-                    </LoadingWrap>
-                }
-            </ContentDiv>
-        </BackgroundDiv>);
-}
+	return (
+		<BackgroundDiv>
+			<ContentDiv>
+				<StyledImg src={closeButton} onClick={() => closePopup({visible: false, symbol: '', name: ''})}/>
+				{chartData.length > 0 ?
+					<>
+						<Name>{name}</Name>
+						<ContentWrap>
+							<ChartWrap>
+								<SubTitle>Today&apos;s stock price</SubTitle>
+								<LineChart width={500} height={400} data={chartData}>
+									<Line type="monotone" dataKey="open" stroke={MainColor} dot={false}/>
+									<Line type="monotone" dataKey="high" stroke={'green'} dot={false}/>
+									<Line type="monotone" dataKey="low" stroke={'red'} dot={false}/>
+									<CartesianGrid strokeDasharray="3 3"/>
+									<Legend />
+									<Tooltip />
+									<XAxis dataKey="date" />
+									<YAxis tickFormatter={(tick: number) => (Math.round((tick + Number.EPSILON) * 100) / 100).toString()} domain={['dataMin-0.6', 'dataMax+0.6']}/>
+								</LineChart>
+							</ChartWrap>
+							<InfoWrap>
+								<SubTitle>Company Info</SubTitle>
+								<table>
+									<tbody>
+										{keys.map(key => <tr key={key}><InfoRow>{key}:</InfoRow><td>{company[key]}</td></tr>)}
+									</tbody>
+								</table>
+							</InfoWrap>
+						</ContentWrap>
+					</> 
+					: 
+					<LoadingWrap>
+						<ReactLoading height={100} width={100} type={'spin'} color={MainColor}/>
+					</LoadingWrap>
+				}
+			</ContentDiv>
+		</BackgroundDiv>);
+};
 
 export default CompanyInfo;
