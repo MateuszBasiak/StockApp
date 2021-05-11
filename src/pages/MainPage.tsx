@@ -11,15 +11,20 @@ import { useHistory } from 'react-router-dom';
 
 const MainDiv = styled.div`
   box-sizing: border-box;
-  padding: 100px 0;
+  padding: 50px 0 100px 0;
 `;
 
 const Title = styled.div`
   color: ${MainColor};
+  width: 1145px;
+  height: 200px;
+  line-height: 200px;
+  margin: auto;
+  border: 5px solid black;
   text-align: center;
   font-size: 50px;
   font-weight: bold;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 `;
 
 const StockTable = styled.table`
@@ -146,7 +151,7 @@ const MainPage: React.FC = () => {
 	useEffect(() => {
 		const pages = history.location.pathname.split('/');
 		setPage(Number.parseInt(pages[pages.length-1]));
-	},[history.location]);
+	}, [history.location]);
 
 	const recordsPerPage = 25;
 	let counter = 0;
