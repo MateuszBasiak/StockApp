@@ -79,7 +79,7 @@ const Menu: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
     
 	useEffect(() => {
 		const currExchanges: Array<string> = [];
-		for(let i = 0; i<exchanges.length+1; i++){
+		for(let i = 0; i<exchanges.length; i++){
 			searchOptions.checked[i] && currExchanges.push(exchanges[i]);
 		}
 		setCurrCompanies(allCompanies.filter(company => currExchanges.includes(company.exchange) && company.name.toLowerCase().includes(searchOptions.searchString)));
