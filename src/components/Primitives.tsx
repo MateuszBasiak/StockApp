@@ -16,16 +16,17 @@ export interface ICompanyGet {
     Exchange?: string;
     Currency?: string;
     Country?: string;
-    Sector?: string;
-    Industry?: string;
-    Address?: string;
+    TrailingPE?: number;
+    PERatio?: number;
+    PEGRatio?: number;
+    BookValue?: number;
     '52WeekHigh'?: number;
     '52WeekLow'?: number;
-    '50DayMovingAverage'?: number;
-    SharesOutstanding?: number;
+    EPS?: number;
+    PayoutRatio?: number;
     SharesShort?: number;
     ShortRatio?: number;
-    PayoutRatio?: number;
+    Beta?: number;
     ForwardPE?: number;
 }
 

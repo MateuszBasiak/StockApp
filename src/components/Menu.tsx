@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {ICompany, MainColor, BackgroundColor} from './Primitives';
 import styled from 'styled-components';
 
@@ -8,46 +8,44 @@ interface Props{
     setPage: (x: number) => void;
 }
 
+interface SearchState{
+    searchString: string;
+    checked: Array<boolean>;
+}
+
 const MenuWrap = styled.div`
-    width: 255px;
-    padding: 20px 20px;
-    left: -238px;
+    display: flex;
+    justify-content: space-between;
+    width: 305px;
+    padding-left: 20px;
+    left: -265px;
     color: ${BackgroundColor};
     position: fixed;
     background: ${MainColor};
     text-align: center;
-    transition: left 0.1s 2s;
+    transition: left 0.1s 2s, overflow 0s 2s;
     box-shadow: 0 0 5px black;
 
     :hover{
-        left: -5px;
+        left: 0px;
         transition: left 0.1s;
-        #name-wrap{
-            opacity: 0;
-            height: 0;
-            transition: opacity 0.1s;
-        }
     }
 `;
 
 const NameWrap = styled.div`
-    position: relative;
-    float: right;
-    width: 20px;
-    height: 282px;
-    padding-left: 15px;
     opacity: 1;
     writing-mode: vertical-rl;
     font-size: 30px;
     font-weight: bold;
-    transition: height 0s 2s, opacity 1s 2.2s;
+    line-height: 60px;
+    align-self: stretch;
+    box-shadow: -2px 0px 10px 0px black;
 `;
 
-const SearchBox = styled.input`
-    width: 210px;
+const SearchBar = styled.input`
+    width: 200px;
     height: 30px;
     font-size: 17px;
-    border-radius: 5px;
     margin-bottom: 15px;
 `;
 
@@ -58,6 +56,11 @@ const SubTitle = styled.div`
     margin-bottom: 15px;
 `;
 
+const StyledForm = styled.form`
+    margin-top: 20px;
+    margin-bottom: 20px;
+`;
+
 const CheckBoxWrap = styled.div`
     text-align: left;
 `;
@@ -66,45 +69,51 @@ const StyledCheckBox = styled.input`
     margin-bottom: 7px;
 `;
 
-const StyledButton = styled.button`
-    width: 210px;
-    height: 35px;
-    margin-top: 10px;
-    font-size: 17px;
-`;
-
 const exchanges = ['NYSE', 'NYSE ARCA', 'NASDAQ', 'NYSE MKT', 'BATS'];
 
 const Menu: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
-
-	const searchCompanies = (event: React.FormEvent<HTMLFormElement>) => {
-		event.preventDefault();
-		let res: Array<ICompany> = [];
+	const [searchOptions, setSearchOptions] = useState<SearchState>({
+		searchString: '',
+		checked: [true, true, true, true, true]
+	});
+    
+	useEffect(() => {
 		const currExchanges: Array<string> = [];
-		const searchString = (event.currentTarget[0] as HTMLInputElement).value.toLowerCase().trim();
-		for(let i = 1; i<exchanges.length+1; i++){
-			if((event.currentTarget[i] as HTMLInputElement).checked) 
-				currExchanges.push((event.currentTarget[i] as HTMLInputElement).name);
+		for(let i = 0; i<exchanges.length+1; i++){
+			searchOptions.checked[i] && currExchanges.push(exchanges[i]);
 		}
-		res = allCompanies.filter(company => currExchanges.includes(company.exchange) && company.name.toLowerCase().includes(searchString));
-		setCurrCompanies(res);
-		setPage(1); 
+		setCurrCompanies(allCompanies.filter(company => currExchanges.includes(company.exchange) && company.name.toLowerCase().includes(searchOptions.searchString)));
+		setPage(1);
+	}, [searchOptions]);
+
+	const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const idx = exchanges.indexOf(event.currentTarget.name);
+		const tmp = searchOptions.checked;
+		tmp[idx] = event.currentTarget.checked;
+		setSearchOptions({
+			...searchOptions,
+			checked: tmp
+		});
 	};
 
-
+	const handleSearchBarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setSearchOptions({
+			...searchOptions,
+			searchString: event.currentTarget.value.toLowerCase().trim()
+		});
+	};
 
 	return (
 		<MenuWrap>
-			<NameWrap id='name-wrap'>Menu</NameWrap>
-			<form onSubmit={searchCompanies}>
+			<StyledForm>
 				<SubTitle>Search Company:</SubTitle>
-				<SearchBox name='searchbar'/>
+				<SearchBar onChange={handleSearchBarChange} name='searchbar'/>
 				<SubTitle>Exchanges:</SubTitle>
 				<CheckBoxWrap>
-					{exchanges.map(exchange => <div key={exchange+'div'}><StyledCheckBox type="checkbox" name={exchange} defaultChecked/><label htmlFor={exchange}>{exchange}</label></div>)}
+					{exchanges.map(exchange => <div key={exchange+'div'}><StyledCheckBox type="checkbox" onChange={handleCheckBoxChange} name={exchange} defaultChecked/><label htmlFor={exchange}>{exchange}</label></div>)}
 				</CheckBoxWrap>
-				<StyledButton type='submit'>Search</StyledButton>
-			</form>
+			</StyledForm>
+			<NameWrap id='name-wrap'>Menu</NameWrap>
 		</MenuWrap>);
 };
 

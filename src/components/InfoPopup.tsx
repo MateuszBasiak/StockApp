@@ -5,6 +5,7 @@ import closeButton from '../img/closeButton.png';
 import ApiClient from '../apiclient/ApiClient';
 import {LineChart, Line, CartesianGrid, XAxis, YAxis, Legend, Tooltip} from 'recharts';
 import ReactLoading from 'react-loading';
+import InfoBox from './InfoBox';
 
 interface Props{
     symbol: string;
@@ -17,7 +18,7 @@ const BackgroundDiv = styled.span`
     height: 100vh;
     position: fixed;
     background: rgb(0,0,0,0.5);
-    padding-top: 10%;
+    padding-top: calc(50vh - 300px);
     z-index: 2;
 `;
 
@@ -28,7 +29,7 @@ const ContentDiv = styled.div`
     margin: auto;
     position: sticky;
     background: ${BackgroundColor};
-    padding: 20px;
+    padding: 20px 20px 50px 20px;
 `;
 
 const StyledImg = styled.img`
@@ -62,17 +63,20 @@ const ContentWrap = styled.div`
 const InfoWrap = styled.div`
     width: 550px;
     float: right;
-    display: inline;
+`;
+
+const BoxesWrap = styled.div`
+	width: 100%;
+	height: 85%;
+	display: flex;
+	justify-content: space-evenly;
+	flex-wrap: wrap;	
 `;
 
 const ChartWrap = styled.div`
     margin: auto;
     width: 550px;
     float: left;
-`;
-
-const InfoRow = styled.td`
-    padding-right: 60px;
 `;
 
 const LoadingWrap = styled.div`
@@ -97,7 +101,7 @@ const decodeTimeSeries = (response: any) : Array<IChartData> => {
 	return res.reverse();
 };
 
-const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
+const InfoPopup: React.FC<Props> = ({symbol, closePopup, name}) => {
 	const [company, setCompany] = useState<ICompanyGet>({});
 	const [chartData, setData] = useState<Array<IChartData>>([]);
 
@@ -118,16 +122,15 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
 			.catch(e => console.log(e));
 	}, [symbol]);
 
-	const keys: Array<keyof ICompanyGet> = ['Symbol', 'Exchange', 'Currency', 'Country', 'Sector', 'Industry', 'Address', '52WeekHigh', 
-		'52WeekLow', '50DayMovingAverage', 'SharesOutstanding', 'SharesShort', 'ShortRatio', 'PayoutRatio', 'ForwardPE'];
+	const keys: Array<keyof ICompanyGet> = ['Exchange', 'Currency', 'Country', 'PERatio', 'PEGRatio', '52WeekHigh', '52WeekLow', 'EPS', 'Beta', 'SharesShort', 'ShortRatio', 'PayoutRatio', 'ForwardPE', 'TrailingPE', 'BookValue'];
 
 	return (
 		<BackgroundDiv>
 			<ContentDiv>
 				<StyledImg src={closeButton} onClick={() => closePopup({visible: false, symbol: '', name: ''})}/>
-				{chartData.length > 0 ?
+				{chartData.length > 0 && company !== {} ?
 					<>
-						<Name>{name}</Name>
+						<Name>{name} ({symbol})</Name>
 						<ContentWrap>
 							<ChartWrap>
 								<SubTitle>Today&apos;s stock price</SubTitle>
@@ -144,11 +147,9 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
 							</ChartWrap>
 							<InfoWrap>
 								<SubTitle>Company Info</SubTitle>
-								<table>
-									<tbody>
-										{keys.map(key => <tr key={key}><InfoRow>{key}:</InfoRow><td>{company[key]}</td></tr>)}
-									</tbody>
-								</table>
+								<BoxesWrap>
+									{keys.map(key => <InfoBox  key={key} name={key} value={company[key]} />)}
+								</BoxesWrap>
 							</InfoWrap>
 						</ContentWrap>
 					</> 
@@ -161,4 +162,4 @@ const CompanyInfo: React.FC<Props> = ({symbol, closePopup, name}) => {
 		</BackgroundDiv>);
 };
 
-export default CompanyInfo;
+export default InfoPopup;

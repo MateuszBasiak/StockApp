@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import CompanyBlock from '../components/CompanyBlock';
+import CompanyRow from '../components/CompanyRow';
 import styled from 'styled-components';
 import ApiClient from '../apiclient/ApiClient';
 import {BackgroundColor, ICompany, IPopup, MainColor, SecondaryColor} from '../components/Primitives';
-import CompanyInfo from '../components/CompanyInfo';
+import InfoPopup from '../components/InfoPopup';
 import Menu from '../components/Menu';
 import ReactLoading from 'react-loading';
 import { useParams } from 'react-router';
@@ -34,7 +34,7 @@ const StockTable = styled.table`
   border-style: hidden;
   overflow: visible;
   td {
-    border-top: 1px solid black;
+    border-top: 1px solid ${MainColor};
     padding: 15px 20px;
     text-align: center;
     cursor: pointer;
@@ -100,6 +100,7 @@ const ErrorWrap = styled.div`
     text-align: center;
     font-weight: bold;
     font-size: 30px;
+	line-height: 100vh;
 `;
 
 const decodeString = (string: string) => {
@@ -125,7 +126,7 @@ const MainPage: React.FC = () => {
 	const history = useHistory();
 	const [allCompanies, setCompanies] = useState<Array<ICompany>>([]);
 	const [currCompanies, setCurrCompanies] = useState<Array<ICompany>>([]);
-	const [page, setPage] = useState<number>(id !== undefined ? Number.parseInt(id) : 1);
+	const [page, setPage] = useState<number>(id !== undefined ? parseInt(id) : 1);
 	const [popup, setPopupVisibility] = useState<IPopup>({
 		visible: false,
 		symbol: '',
@@ -137,7 +138,7 @@ const MainPage: React.FC = () => {
 		setPage(page);
 	};
 
-	const validatePageNumber = (): boolean => currCompanies.length === 0 || (page > 0 && page <= Math.ceil(currCompanies.length / recordsPerPage));
+	const validatePageNumber = (): boolean => !isNaN(parseInt(id)) && (currCompanies.length === 0 || (page > 0 && page <= Math.ceil(currCompanies.length / recordsPerPage)));
 
 	useEffect(() => {
 		const apiClient = new ApiClient();
@@ -174,13 +175,12 @@ const MainPage: React.FC = () => {
 
 	return (
 		<>
-			{popup.visible ? <CompanyInfo closePopup={setPopupVisibility} name={popup.name} symbol={popup.symbol}/> : null}
-      
-			<MainDiv>
-				<Title>Stock Platform</Title>
-				<Menu setPage={changePage} allCompanies={allCompanies} setCurrCompanies={setCurrCompanies}/>
-				{validatePageNumber() ? 
-					allCompanies.length > 0 ? 
+			{popup.visible && <InfoPopup closePopup={setPopupVisibility} name={popup.name} symbol={popup.symbol}/>}
+			{validatePageNumber() ?
+				<MainDiv>
+					<Title>Stock Platform</Title>
+					<Menu setPage={changePage} allCompanies={allCompanies} setCurrCompanies={setCurrCompanies}/>
+					{allCompanies.length > 0 ? 
 						<ContentWrap>
 							<PageWrap>
 								{generatePages()}
@@ -194,7 +194,7 @@ const MainPage: React.FC = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{currCompanies.slice((page - 1) * recordsPerPage,page * recordsPerPage).map(company => <CompanyBlock key={counter++} showPopup={setPopupVisibility} symbol={company.symbol} name={company.name} exchange={company.exchange}/>)}
+									{currCompanies.slice((page - 1) * recordsPerPage,page * recordsPerPage).map(company => <CompanyRow key={counter++} showPopup={setPopupVisibility} symbol={company.symbol} name={company.name} exchange={company.exchange}/>)}
 								</tbody>
 							</StockTable>
 							<PageWrap>
@@ -204,9 +204,9 @@ const MainPage: React.FC = () => {
 						:
 						<LoadingWrap>
 							<ReactLoading height={100} width={100} type={'spin'} color={MainColor}/>
-						</LoadingWrap>            
-					: <ErrorWrap>Error 404: Page not found</ErrorWrap>}
-			</MainDiv>
+						</LoadingWrap>}            
+				</MainDiv>
+				: <ErrorWrap>Error 404: Page not found</ErrorWrap>}
 		</>
 	);
 };

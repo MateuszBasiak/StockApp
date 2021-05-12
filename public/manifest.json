@@ -1,6 +1,6 @@
 {
-  "short_name": "Stock Platform",
-  "name": "Stock Platform",
+  "short_name": "Stock App",
+  "name": "Stock App",
   "icons": [
     {
       "src": "favicon.ico",
@@ -11,5 +11,5 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#3d3d3d",
-  "background_color": "#fffef2"
+  "background_color": "#f5f2e9"
 }

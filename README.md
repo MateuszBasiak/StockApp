@@ -1,2 +1,2 @@
-# Stock Platform
-This project was prepared for an internship for Alergeek Ventures using AlphaVantage free API.
+# Stock App
+Website created for showing stocks from different exchanges using Alpha Vantage free API.

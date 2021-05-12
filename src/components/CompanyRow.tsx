@@ -8,7 +8,7 @@ interface Props{
     showPopup: (x: IPopup) => void;
 }
 
-const CompanyBlock: React.FC<Props> = ({symbol, name, exchange, showPopup}) => {
+const CompanyRow: React.FC<Props> = ({symbol, name, exchange, showPopup}) => {
 
 	return (
 		<tr onClick={() => showPopup({visible: true, symbol, name})}>
@@ -18,4 +18,4 @@ const CompanyBlock: React.FC<Props> = ({symbol, name, exchange, showPopup}) => {
 		</tr>);
 };
 
-export default CompanyBlock;
+export default CompanyRow;

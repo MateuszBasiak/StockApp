@@ -22,10 +22,6 @@ class ApiClient{
 	async getTodaysStocks(symbol: string, interval: TimeInterval){
 		return fetch(this.URL+'TIME_SERIES_INTRADAY&symbol='+symbol+'&interval='+interval+'&apikey='+this.KEY);
 	}
-
-	async getDailyStocks(symbol: string){
-		return fetch(this.URL+'TIME_SERIES_DAILY^symbol='+symbol+'&outputsize=compact&apikey='+this.KEY);
-	}
 }
 
 export default ApiClient;
