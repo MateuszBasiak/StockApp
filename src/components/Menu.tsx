@@ -23,7 +23,7 @@ const MenuWrap = styled.div`
     position: fixed;
     background: ${MainColor};
     text-align: center;
-    transition: left 0.1s 2s, overflow 0s 2s;
+    transition: left 0.1s 2s;
     box-shadow: 0 0 5px black;
 
     :hover{
