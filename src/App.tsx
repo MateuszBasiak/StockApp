@@ -9,11 +9,11 @@ const App: React.FC = () => {
 	return (
 		<Router history={history}>
 			<Switch>
-				<Route exact path="/">
-					<Redirect to='/page/1' />
+				<Route path='/page/:id'>
 					<MainPage />
 				</Route>
-				<Route path='/page/:id'>
+				<Route exact path="/">
+					<Redirect to='/page/1' />
 					<MainPage />
 				</Route>
 			</Switch>

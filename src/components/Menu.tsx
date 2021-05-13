@@ -71,19 +71,28 @@ const StyledCheckBox = styled.input`
 
 const exchanges = ['NYSE', 'NYSE ARCA', 'NASDAQ', 'NYSE MKT', 'BATS'];
 
+const useDidMount = (): boolean => {
+	const [didMount, setDidMount] = useState<boolean>(false);
+	useEffect(() => setDidMount(true), []);
+	return didMount;
+};
+
 const Menu: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
 	const [searchOptions, setSearchOptions] = useState<SearchState>({
 		searchString: '',
 		checked: [true, true, true, true, true]
 	});
-    
+	const didMount = useDidMount();
+
 	useEffect(() => {
-		const currExchanges: Array<string> = [];
-		for(let i = 0; i<exchanges.length; i++){
-			searchOptions.checked[i] && currExchanges.push(exchanges[i]);
+		if(didMount){
+			const currExchanges: Array<string> = [];
+			for(let i = 0; i<exchanges.length; i++){
+				searchOptions.checked[i] && currExchanges.push(exchanges[i]);
+			}
+			setCurrCompanies(allCompanies.filter(company => currExchanges.includes(company.exchange) && company.name.toLowerCase().includes(searchOptions.searchString)));
+			setPage(1);
 		}
-		setCurrCompanies(allCompanies.filter(company => currExchanges.includes(company.exchange) && company.name.toLowerCase().includes(searchOptions.searchString)));
-		setPage(1);
 	}, [searchOptions]);
 
 	const handleCheckBoxChange = (event: React.ChangeEvent<HTMLInputElement>) => {

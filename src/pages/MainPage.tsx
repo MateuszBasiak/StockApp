@@ -8,6 +8,7 @@ import Menu from '../components/Menu';
 import ReactLoading from 'react-loading';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
+import NotFound from './NotFound';
 
 const MainDiv = styled.div`
   box-sizing: border-box;
@@ -94,13 +95,6 @@ const LoadingWrap = styled.div`
     top: 60%;
     width: 100px;
     margin: auto;
-`;
-
-const ErrorWrap = styled.div`
-    text-align: center;
-    font-weight: bold;
-    font-size: 30px;
-	line-height: 100vh;
 `;
 
 const decodeString = (string: string) => {
@@ -206,7 +200,7 @@ const MainPage: React.FC = () => {
 							<ReactLoading height={100} width={100} type={'spin'} color={MainColor}/>
 						</LoadingWrap>}            
 				</MainDiv>
-				: <ErrorWrap>Error 404: Page not found</ErrorWrap>}
+				: <NotFound />}
 		</>
 	);
 };
