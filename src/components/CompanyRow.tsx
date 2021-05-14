@@ -9,7 +9,6 @@ interface Props{
 }
 
 const CompanyRow: React.FC<Props> = ({symbol, name, exchange, showPopup}) => {
-
 	return (
 		<tr onClick={() => showPopup({visible: true, symbol, name})}>
 			<td>{symbol}</td>

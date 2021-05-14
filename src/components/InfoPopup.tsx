@@ -108,7 +108,6 @@ const InfoPopup: React.FC<Props> = ({symbol, closePopup, name}) => {
 	useEffect(() => {
 		const apiClient = new ApiClient();
 		apiClient.getCompanyInfo(symbol)
-			.then(response => response.json())
 			.then(response => setCompany(response))
 			.catch(e => console.log(e));
 	}, [symbol]);
@@ -116,7 +115,6 @@ const InfoPopup: React.FC<Props> = ({symbol, closePopup, name}) => {
 	useEffect(() => {
 		const apiClient = new ApiClient();
 		apiClient.getTodaysStocks(symbol, '5min')
-			.then(response => response.json())
 			.then(response => decodeTimeSeries(response))
 			.then(response => setData(response))
 			.catch(e => console.log(e));

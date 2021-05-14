@@ -40,3 +40,5 @@ export interface IChartData{
 export const MainColor = '#3d3d3d';
 export const SecondaryColor = 'lightgrey';
 export const BackgroundColor = '#f5f2e9';
+
+export const recordsPerPage = 25;
