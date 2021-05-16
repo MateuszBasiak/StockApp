@@ -15,7 +15,6 @@ const App: React.FC = () => {
 				</Route>
 				<Route exact path="/">
 					<Redirect to='/page/1' />
-					<MainPage />
 				</Route>
 				<Route>
 					<NotFound />

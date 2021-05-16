@@ -23,6 +23,7 @@ const BackgroundDiv = styled.span`
 `;
 
 const ContentDiv = styled.div`
+	color: ${MainColor};
     box-sizing: border-box;
     width: 1200px;
     height: 600px;
@@ -86,38 +87,33 @@ const LoadingWrap = styled.div`
     margin: auto;
 `;
 
-const decodeTimeSeries = (response: any) : Array<IChartData> => {
-	const res: Array<IChartData> = [];
-	const header = 'Time Series (5min)';
-	if(!response[header]) return res;
-	Object.keys(response[header]).slice(0, 50).forEach((date: string) => {
-		res.push({
-			date: date.split(' ')[1],
-			open: response[header][date]['1. open'],
-			high: response[header][date]['2. high'],
-			low: response[header][date]['3. low'],
-		});
-	});
-	return res.reverse();
-};
+const ErrorWrap = styled.div`
+	position: relative;
+	width: 80%;
+	margin: auto;
+	height: 530px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 30px;
+	font-weight: bold;
+`;
 
 const InfoPopup: React.FC<Props> = ({symbol, closePopup, name}) => {
 	const [company, setCompany] = useState<ICompanyGet>({});
 	const [chartData, setData] = useState<Array<IChartData>>([]);
+	const [reloadError, setError] = useState<boolean>(false);
 
 	useEffect(() => {
+		const interval = setInterval(() => setError(true), 5000);
 		const apiClient = new ApiClient();
 		apiClient.getCompanyInfo(symbol)
 			.then(response => setCompany(response))
 			.catch(e => console.log(e));
-	}, [symbol]);
-
-	useEffect(() => {
-		const apiClient = new ApiClient();
 		apiClient.getTodaysStocks(symbol, '5min')
-			.then(response => decodeTimeSeries(response))
 			.then(response => setData(response))
-			.catch(e => console.log(e));
+			.catch(() => setError(true));
+		return () => clearInterval(interval);
 	}, [symbol]);
 
 	const keys: Array<keyof ICompanyGet> = ['Exchange', 'Currency', 'Country', 'PERatio', 'PEGRatio', '52WeekHigh', '52WeekLow', 'EPS', 'Beta', 'SharesShort', 'ShortRatio', 'PayoutRatio', 'ForwardPE', 'TrailingPE', 'BookValue'];
@@ -125,37 +121,40 @@ const InfoPopup: React.FC<Props> = ({symbol, closePopup, name}) => {
 	return (
 		<BackgroundDiv>
 			<ContentDiv>
-				<StyledImg src={closeButton} onClick={() => closePopup({visible: false, symbol: '', name: ''})}/>
-				{chartData.length > 0 && company !== {} ?
+				{reloadError ? <ErrorWrap>Error Occured: Please reload the popup</ErrorWrap> :
 					<>
-						<Name>{name} ({symbol})</Name>
-						<ContentWrap>
-							<ChartWrap>
-								<SubTitle>Today&apos;s stock price</SubTitle>
-								<LineChart width={500} height={400} data={chartData}>
-									<Line type="monotone" dataKey="open" stroke={MainColor} dot={false}/>
-									<Line type="monotone" dataKey="high" stroke={'green'} dot={false}/>
-									<Line type="monotone" dataKey="low" stroke={'red'} dot={false}/>
-									<CartesianGrid strokeDasharray="3 3"/>
-									<Legend />
-									<Tooltip />
-									<XAxis dataKey="date" />
-									<YAxis tickFormatter={(tick: number) => (Math.round((tick + Number.EPSILON) * 100) / 100).toString()} domain={['dataMin-0.6', 'dataMax+0.6']}/>
-								</LineChart>
-							</ChartWrap>
-							<InfoWrap>
-								<SubTitle>Company Info</SubTitle>
-								<BoxesWrap>
-									{keys.map(key => <InfoBox  key={key} name={key} value={company[key]} />)}
-								</BoxesWrap>
-							</InfoWrap>
-						</ContentWrap>
-					</> 
-					: 
-					<LoadingWrap>
-						<ReactLoading height={100} width={100} type={'spin'} color={MainColor}/>
-					</LoadingWrap>
-				}
+						<StyledImg src={closeButton} onClick={() => closePopup({visible: false, symbol: '', name: ''})}/>
+						{chartData.length > 0 && company !== {} ?
+							<>
+								<Name>{name} ({symbol})</Name>
+								<ContentWrap>
+									<ChartWrap>
+										<SubTitle>Today&apos;s stock price</SubTitle>
+										<LineChart width={500} height={400} data={chartData}>
+											<Line type="monotone" dataKey="open" stroke={MainColor} dot={false}/>
+											<Line type="monotone" dataKey="high" stroke={'green'} dot={false}/>
+											<Line type="monotone" dataKey="low" stroke={'red'} dot={false}/>
+											<CartesianGrid strokeDasharray="3 3"/>
+											<Legend />
+											<Tooltip />
+											<XAxis dataKey="date" />
+											<YAxis tickFormatter={(tick: number) => (Math.round((tick + Number.EPSILON) * 100) / 100).toString()} domain={['dataMin-0.6', 'dataMax+0.6']}/>
+										</LineChart>
+									</ChartWrap>
+									<InfoWrap>
+										<SubTitle>Company Info</SubTitle>
+										<BoxesWrap>
+											{keys.map(key => <InfoBox  key={key} name={key} value={company[key]} />)}
+										</BoxesWrap>
+									</InfoWrap>
+								</ContentWrap>
+							</> 
+							: 
+							<LoadingWrap>
+								<ReactLoading height={100} width={100} type={'spin'} color={MainColor}/>
+							</LoadingWrap>
+						}
+					</>}
 			</ContentDiv>
 		</BackgroundDiv>);
 };

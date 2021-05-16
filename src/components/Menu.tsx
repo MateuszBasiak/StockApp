@@ -33,7 +33,6 @@ const MenuWrap = styled.div`
 `;
 
 const NameWrap = styled.div`
-    opacity: 1;
     writing-mode: vertical-rl;
     font-size: 30px;
     font-weight: bold;
@@ -47,6 +46,7 @@ const SearchBar = styled.input`
     height: 30px;
     font-size: 17px;
     margin-bottom: 15px;
+	box-shadow: 0 0 5px 1px black;
 `;
 
 const SubTitle = styled.div`
@@ -87,7 +87,7 @@ const Menu: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
 	useEffect(() => {
 		if(didMount){
 			const currExchanges: Array<string> = [];
-			for(let i = 0; i<exchanges.length; i++){
+			for(let i = 0; i < exchanges.length; i++){
 				searchOptions.checked[i] && currExchanges.push(exchanges[i]);
 			}
 			setCurrCompanies(allCompanies.filter(company => currExchanges.includes(company.exchange) && company.name.toLowerCase().includes(searchOptions.searchString)));
@@ -119,10 +119,10 @@ const Menu: React.FC<Props> = ({setCurrCompanies, allCompanies, setPage}) => {
 				<SearchBar onChange={handleSearchBarChange} name='searchbar'/>
 				<SubTitle>Exchanges:</SubTitle>
 				<CheckBoxWrap>
-					{exchanges.map(exchange => <div key={exchange+'div'}><StyledCheckBox type="checkbox" onChange={handleCheckBoxChange} name={exchange} defaultChecked/><label htmlFor={exchange}>{exchange}</label></div>)}
+					{exchanges.map(exchange => <div key={exchange + 'div'}><StyledCheckBox type="checkbox" onChange={handleCheckBoxChange} name={exchange} defaultChecked/><label htmlFor={exchange}>{exchange}</label></div>)}
 				</CheckBoxWrap>
 			</StyledForm>
-			<NameWrap id='name-wrap'>Menu</NameWrap>
+			<NameWrap>Menu</NameWrap>
 		</MenuWrap>);
 };
 

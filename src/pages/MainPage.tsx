@@ -14,6 +14,7 @@ import PageButtons from '../components/PageButtons';
 const MainDiv = styled.div`
   box-sizing: border-box;
   padding: 50px 0 100px 0;
+  color: ${MainColor};
 `;
 
 const Title = styled.div`
@@ -22,11 +23,12 @@ const Title = styled.div`
   height: 200px;
   line-height: 200px;
   margin: auto;
-  border: 5px solid black;
+  border: 5px solid ${MainColor};
   text-align: center;
   font-size: 50px;
   font-weight: bold;
   margin-bottom: 50px;
+  box-sizing: border-box;
 `;
 
 const ContentWrap = styled.div`
@@ -69,7 +71,7 @@ const MainPage: React.FC = () => {
 
 	useEffect(() => {
 		const pages = history.location.pathname.split('/');
-		setPage(Number.parseInt(pages[pages.length-1]));
+		setPage(Number.parseInt(pages[pages.length - 1]));
 	}, [history.location]);
 	
 	return (

@@ -32,7 +32,7 @@ const InfoBox: React.FC<Props> = ({name, value}) => {
 	return (
 		<GreyBox>
 			<TitleDiv>{name}</TitleDiv>
-			<ValueDiv>{value}</ValueDiv>
+			<ValueDiv>{value !== undefined ? value : '-'}</ValueDiv>
 		</GreyBox>);
 };
 

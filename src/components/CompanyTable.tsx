@@ -15,27 +15,32 @@ const StyledTable = styled.table`
   border-collapse: collapse;
   border-style: hidden;
   overflow: visible;
+
   td {
     border-top: 1px solid ${MainColor};
     padding: 15px 20px;
     text-align: center;
     cursor: pointer;
   }
+
   tr{
     margin-bottom: 20px;
   }
+
   tbody tr:hover{
     background: ${MainColor};
     color: ${BackgroundColor};
 	box-shadow: 0 0 5px black;
   }
+
   th{
     color: ${BackgroundColor};
     background: ${MainColor};
     padding: 20px 20px;
   }
+
   thead{
-	box-shadow: 0 0 5px black;
+	  box-shadow: 0 0 5px black;
   }
 
   #symbol, #exchange{

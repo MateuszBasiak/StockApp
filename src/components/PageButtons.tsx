@@ -37,7 +37,7 @@ const PageButtons: React.FC<Props> = ({ changePage, companiesLength, page }) => 
 	const buttons = [];
 
 	if(page > 6) buttons.push(<PageBlock key={-7} onClick={() => changePage(1)}>{'<<'}</PageBlock>);
-	if(page > 1) buttons.push(<PageBlock key={-6} onClick={() => changePage(page -1)}>{'<'}</PageBlock>);
+	if(page > 1) buttons.push(<PageBlock key={-6} onClick={() => changePage(page - 1)}>{'<'}</PageBlock>);
 	for(let i = -5; i <= 5; i++){
 		if(i === 0){
 			buttons.push(<PageBlock key={i} id="current-page" onClick={() => changePage(page + i)}>{page + i}</PageBlock>);
