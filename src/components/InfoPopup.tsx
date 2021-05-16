@@ -121,40 +121,38 @@ const InfoPopup: React.FC<Props> = ({symbol, closePopup, name}) => {
 	return (
 		<BackgroundDiv>
 			<ContentDiv>
-				{reloadError ? <ErrorWrap>Error Occured: Please reload the popup</ErrorWrap> :
+				<StyledImg src={closeButton} onClick={() => closePopup({visible: false, symbol: '', name: ''})}/>
+				{chartData.length > 0 && company !== {} ?
 					<>
-						<StyledImg src={closeButton} onClick={() => closePopup({visible: false, symbol: '', name: ''})}/>
-						{chartData.length > 0 && company !== {} ?
-							<>
-								<Name>{name} ({symbol})</Name>
-								<ContentWrap>
-									<ChartWrap>
-										<SubTitle>Today&apos;s stock price</SubTitle>
-										<LineChart width={500} height={400} data={chartData}>
-											<Line type="monotone" dataKey="open" stroke={MainColor} dot={false}/>
-											<Line type="monotone" dataKey="high" stroke={'green'} dot={false}/>
-											<Line type="monotone" dataKey="low" stroke={'red'} dot={false}/>
-											<CartesianGrid strokeDasharray="3 3"/>
-											<Legend />
-											<Tooltip />
-											<XAxis dataKey="date" />
-											<YAxis tickFormatter={(tick: number) => (Math.round((tick + Number.EPSILON) * 100) / 100).toString()} domain={['dataMin-0.6', 'dataMax+0.6']}/>
-										</LineChart>
-									</ChartWrap>
-									<InfoWrap>
-										<SubTitle>Company Info</SubTitle>
-										<BoxesWrap>
-											{keys.map(key => <InfoBox  key={key} name={key} value={company[key]} />)}
-										</BoxesWrap>
-									</InfoWrap>
-								</ContentWrap>
-							</> 
-							: 
-							<LoadingWrap>
-								<ReactLoading height={100} width={100} type={'spin'} color={MainColor}/>
-							</LoadingWrap>
-						}
-					</>}
+						<Name>{name} ({symbol})</Name>
+						<ContentWrap>
+							<ChartWrap>
+								<SubTitle>Today&apos;s stock price</SubTitle>
+								<LineChart width={500} height={400} data={chartData}>
+									<Line type="monotone" dataKey="open" stroke={MainColor} dot={false}/>
+									<Line type="monotone" dataKey="high" stroke={'green'} dot={false}/>
+									<Line type="monotone" dataKey="low" stroke={'red'} dot={false}/>
+									<CartesianGrid strokeDasharray="3 3"/>
+									<Legend />
+									<Tooltip />
+									<XAxis dataKey="date" />
+									<YAxis tickFormatter={(tick: number) => (Math.round((tick + Number.EPSILON) * 100) / 100).toString()} domain={['dataMin-0.6', 'dataMax+0.6']}/>
+								</LineChart>
+							</ChartWrap>
+							<InfoWrap>
+								<SubTitle>Company Info</SubTitle>
+								<BoxesWrap>
+									{keys.map(key => <InfoBox  key={key} name={key} value={company[key]} />)}
+								</BoxesWrap>
+							</InfoWrap>
+						</ContentWrap>
+					</> 
+					: 
+					reloadError ? <ErrorWrap>Error Occured: Please reload the popup</ErrorWrap> :
+						<LoadingWrap>
+							<ReactLoading height={100} width={100} type={'spin'} color={MainColor}/>
+						</LoadingWrap>
+				}
 			</ContentDiv>
 		</BackgroundDiv>);
 };
